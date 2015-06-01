@@ -16,7 +16,7 @@ import helpers.HadoopHelper
 
 object SAMPLE_SqlJoinWithMongo {
   def main(args: Array[String]) {
-    // Spark Context setup
+/*    // Spark Context setup
     val conf = new SparkConf().setMaster("local").setAppName("Bee-Spark")
     val sc = new SparkContext(conf)
     sc.setLocalProperty("spark.serializer", classOf[KryoSerializer].getName)
@@ -155,7 +155,7 @@ object SAMPLE_SqlJoinWithMongo {
     })
     orderRDD.saveAsNewAPIHadoopFile("file:///bogus", classOf[Any], classOf[Any], classOf[com.mongodb.hadoop.MongoOutputFormat[Any, Any]], mongoOrderConf)
     */
-  }
+*/  }
 
   def rowToMapES(row: sql.Row) = {
     val fields = HashMap(

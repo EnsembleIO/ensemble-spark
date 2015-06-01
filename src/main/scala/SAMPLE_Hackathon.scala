@@ -24,61 +24,20 @@ object SAMPLE_Hackathon {
     val esJobConf = new JobConf(sc.hadoopConfiguration)
     //esJobConf.setOutputFormat(classOf[EsOutputFormat])
     esJobConf.setOutputCommitter(classOf[FileOutputCommitter])
-    esJobConf.set(ConfigurationOptions.ES_NODES, "127.0.0.1")
+    esJobConf.set(ConfigurationOptions.ES_NODES, "localhost")
+    //esJobConf.set(ConfigurationOptions.ES_NODES, "https://fzan4xer:1l0nx4qxyuup12ul@azalea-9794680.us-east-1.bonsai.io/")
     esJobConf.set(ConfigurationOptions.ES_PORT, "9200")
+    //esJobConf.set(ConfigurationOptions.ES_PORT, "80")
     FileOutputFormat.setOutputPath(esJobConf, new Path("-"))
 
     val format = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 
     val sqlContext = new org.apache.spark.sql.SQLContext(sc)
 
-
-    /*case class TraceIn ( ID: String,
-                         SID: String,
-                         DATE_LOG: String,
-                         WEIGHT: Double
-                         )*/
-
-    val newsPath = "/Users/alex/ensemble-faker/fake-news.json"
-
-    val news = sqlContext.jsonFile(newsPath)
-
-    news.printSchema()
-
-    news.registerTempTable("news")
-
-
-    // Alternatively, a SchemaRDD can be created for a JSON dataset represented by
-    // an RDD[String] storing one JSON object per string.
-    val anotherPeopleRDD = sc.parallelize(
-      """{"name":"Yin","address":{"city":"Columbus","state":"Ohio"}}""" :: Nil)
-
-    news.saveToEs("test/test")
-
-    /*
-    println("----Depense IN----")
-    val traceIn = sc.textFile("/Users/alex/ensemble-faker/fake-weight*.csv").map(_.split(";")).map(
-      c => (c(0), TraceIn(
-        c(0),
-        c(1),
-        c(2),
-        c(3).toDouble
-      ))
-    )
-    traceIn.take(3).foreach(println)
-
-    traceIn.map({case (k,v) => v}).map(rowToMap).saveToEs("hackathon/news")
-
-    def rowToMap(t: TraceIn) = {
-      val fields = HashMap(
-        "id" -> t.ID,
-        "sid" -> t.SID,
-        "dateTrace" -> t.DATE_LOG,
-        "weight" -> t.WEIGHT
-      )
-      fields
-    }
-    */
+    val fakePath = "/Users/alex/ensemble-faker/fake-news.json"
+    val fake = sqlContext.jsonFile(fakePath)
+    fake.printSchema()
+    fake.saveToEs("hackathon/news")
 
   }
 
